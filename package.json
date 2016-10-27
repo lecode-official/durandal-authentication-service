@@ -1,0 +1,35 @@
+{
+  "name": "typescript-authentication-service",
+  "displayName": "TypeScript Authentication Service",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A simple library written in TypeScript for authentication using OAuth.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lecode-official/typescript-authentication-service.git"
+  },
+  "keywords": [
+    "Authentication",
+    "OAuth",
+    "JWT",
+    "jQuery",
+    "Knockout",
+    "TypeScript"
+  ],
+  "author": "David Neumann & Lukas Rögner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lecode-official/typescript-authentication-service/issues"
+  },
+  "homepage": "https://github.com/lecode-official/typescript-authentication-service#readme",
+  "devDependencies": {
+    "bower": "^1.7.9",
+    "dts-generator": "2.0.0",
+    "gulp": "^3.9.1",
+    "gulp-bower": "0.0.13",
+    "gulp-clean": "^0.3.2",
+    "gulp-typescript": "^3.0.1",
+    "run-sequence": "1.2.2",
+    "typescript": "^2.0.3"
+  }
+}

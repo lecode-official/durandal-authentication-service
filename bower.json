@@ -1,0 +1,45 @@
+{
+  "name": "typescript-authentication-service",
+  "homepage": "https://github.com/lecode-official/typescript-authentication-service",
+  "authors": [
+    "David Neumann <david.neumann@live.com>",
+    "Lukas Rögner <lukas.roegner@icloud.com>"
+  ],
+  "description": "A simple library written in TypeScript for authentication using OAuth.",
+  "main": "./build/typescript-authentication-service.d.ts",
+  "moduleType": [
+    "amd"
+  ],
+  "devDependencies": {
+    "DefinitelyTyped": "*"
+  },
+  "keywords": [
+    "Authentication",
+    "OAuth",
+    "JWT",
+    "jQuery",
+    "Knockout",
+    "TypeScript"
+  ],
+  "version": "0.1.0",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "node_modules",
+    "tsconfig.json",
+    "gulpfile.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "jwt-decode": "2.1.0",
+    "knockout": "3.4.0",
+    "typescript-http-client": "https://github.com/lecode-official/typescript-http-client.git#v0.1.0",
+    "typescript-globalization": "https://github.com/lecode-official/typescript-globalization.git#v0.1.0",
+    "typescript-storage-service": "https://github.com/lecode-official/typescript-storage-service.git#v0.1.2",
+    "toastr": "2.1.3"
+  },
+  "resolutions": {
+    "jquery": "3.1.1"
+  }
+}
