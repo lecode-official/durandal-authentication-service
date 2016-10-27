@@ -21,7 +21,7 @@
     "Knockout",
     "TypeScript"
   ],
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "ignore": [
     "**/.*",
@@ -34,7 +34,6 @@
   "dependencies": {
     "jwt-decode": "2.1.0",
     "knockout": "3.4.0",
-    "typescript-http-client": "https://github.com/lecode-official/typescript-http-client.git#v0.1.0",
     "typescript-globalization": "https://github.com/lecode-official/typescript-globalization.git#v0.1.0",
     "typescript-storage-service": "https://github.com/lecode-official/typescript-storage-service.git#v0.1.2",
     "toastr": "2.1.3"

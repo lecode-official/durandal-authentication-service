@@ -1,5 +1,5 @@
 ///<amd-module name='Authentication/AuthenticationService'/>
-define("Authentication/AuthenticationService", ["require", "exports", "Authentication/AuthenticationState", "Globalization/DateTime", "Http/HttpClient", "jwt_decode", "jquery", "knockout", "Storage/StorageService", "Globalization/TimeSpan", "Authentication/User"], function (require, exports, AuthenticationState, DateTime, HttpClient, jwt_decode, jquery, knockout, StorageService, TimeSpan, User) {
+define("Authentication/AuthenticationService", ["require", "exports", "Authentication/AuthenticationState", "Globalization/DateTime", "jwt_decode", "jquery", "knockout", "Storage/StorageService", "Globalization/TimeSpan", "Authentication/User"], function (require, exports, AuthenticationState, DateTime, jwt_decode, jquery, knockout, StorageService, TimeSpan, User) {
     "use strict";
     // #endregion
     /**
@@ -232,15 +232,6 @@ define("Authentication/AuthenticationService", ["require", "exports", "Authentic
             AuthenticationService.configuration = configuration;
             // Sets the store
             AuthenticationService.store = StorageService.get(configuration.storageKind);
-            // Registers for changes of the state, so that the bearer token header in the default headers of the HTTP client can be updated
-            AuthenticationService.state.subscribe(function (newValue) {
-                if (!!AuthenticationService.store.get("AuthenticationService:BearerToken")) {
-                    HttpClient.defaultHeaders["Authorization"] = "Bearer " + AuthenticationService.store.get("AuthenticationService:BearerToken");
-                }
-                else {
-                    delete HttpClient.defaultHeaders["Authorization"];
-                }
-            });
             // Tries to detect an bearer token
             AuthenticationService.detectBearerToken();
             // Checks the token and sets all variables according to the state

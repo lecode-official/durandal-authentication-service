@@ -8,7 +8,6 @@
 import AuthenticationConfiguration = require("Authentication/AuthenticationConfiguration");
 import AuthenticationState = require("Authentication/AuthenticationState");
 import DateTime = require("Globalization/DateTime");
-import HttpClient = require("Http/HttpClient");
 import jwt_decode = require("jwt_decode");
 import jquery = require("jquery");
 import knockout = require("knockout");
@@ -326,15 +325,6 @@ class AuthenticationService {
 
         // Sets the store
         AuthenticationService.store = StorageService.get(configuration.storageKind);
-
-        // Registers for changes of the state, so that the bearer token header in the default headers of the HTTP client can be updated
-        AuthenticationService.state.subscribe(newValue => {
-            if (!!AuthenticationService.store.get<string>("AuthenticationService:BearerToken")) {
-                HttpClient.defaultHeaders["Authorization"] = "Bearer " + AuthenticationService.store.get<string>("AuthenticationService:BearerToken");
-            } else {
-                delete HttpClient.defaultHeaders["Authorization"];
-            }
-        });
 
         // Tries to detect an bearer token
         AuthenticationService.detectBearerToken();

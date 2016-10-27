@@ -2,7 +2,7 @@
   "name": "typescript-authentication-service",
   "displayName": "TypeScript Authentication Service",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple library written in TypeScript for authentication using OAuth.",
   "repository": {
     "type": "git",
