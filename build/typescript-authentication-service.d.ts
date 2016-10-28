@@ -47,6 +47,12 @@ declare module 'Authentication/AuthenticationConfiguration' {
 	     */
 	    scopes: Array<string>;
 	    /**
+	     * Gets or sets additional parameters that are sent to the sign in endpoint.
+	     */
+	    additionalParameters: {
+	        [key: string]: string;
+	    } | null;
+	    /**
 	     * Gets or sets the URI that is used to sign in.
 	     */
 	    signInPath: string;
@@ -144,12 +150,6 @@ declare module 'Authentication/AuthenticationService' {
 	    * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced.
 	    */
 	    static signInExternal(provider: string, redirectUri?: string): void;
-	    /**
-	     * Redirects the user to the provided path of the identity service.
-	     * @param {string} path The path to which the user is redirected.
-	     * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced.
-	     */
-	    static redirect(path: string, redirectUri?: string): void;
 	    /**
 	     * Redirects the user to the URI where the sign out takes place.
 	     * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced.

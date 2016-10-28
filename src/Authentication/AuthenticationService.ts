@@ -239,6 +239,15 @@ class AuthenticationService {
             "nonce=" + encodeURIComponent(AuthenticationService.generateGuid()) + "&" +
             "prompt=none";
 
+        // Adds additional parameters to the URL
+        if (!!AuthenticationService.configuration.additionalParameters) {
+            for (var parameter in AuthenticationService.configuration.additionalParameters) {
+                if (AuthenticationService.configuration.additionalParameters[parameter] != null) {
+                    url = url + "&" + parameter + "=" + encodeURIComponent(AuthenticationService.configuration.additionalParameters[parameter]);
+                }
+            }
+        }
+
         // Adds a new iFrame to the DOM
         var frame = window.document.createElement("iframe");
         frame.style.display = "none";
@@ -364,8 +373,8 @@ class AuthenticationService {
             uri = window.location.protocol + "//" + window.location.host;
         }
 
-        // Redirects the user to the sign in URI
-        window.location.href = AuthenticationService.configuration.uri + AuthenticationService.configuration.signInPath + "?" +
+        // Creates the sign in URL
+        var signInUrl = AuthenticationService.configuration.uri + AuthenticationService.configuration.signInPath + "?" +
             (!!idToken ? "id_token_hint=" + encodeURIComponent(idToken) + "&" : "") +
             "client_id=" + encodeURIComponent(AuthenticationService.configuration.clientId) + "&" +
             "redirect_uri=" + encodeURIComponent(uri) + "&" +
@@ -373,6 +382,18 @@ class AuthenticationService {
             "scope=" + encodeURIComponent(AuthenticationService.configuration.scopes.join(" ")) + "&" +
             "state=" + encodeURIComponent(!!state ? state : "") + "&" +
             "nonce=" + encodeURIComponent(AuthenticationService.generateGuid());
+
+        // Adds additional parameters to the URL
+        if (!!AuthenticationService.configuration.additionalParameters) {
+            for (var parameter in AuthenticationService.configuration.additionalParameters) {
+                if (AuthenticationService.configuration.additionalParameters[parameter] != null) {
+                    signInUrl = signInUrl + "&" + parameter + "=" + encodeURIComponent(AuthenticationService.configuration.additionalParameters[parameter]);
+                }
+            }
+        }
+        
+        // Redirects the user to the sign in URL
+        window.location.href = signInUrl;
     }
 
     /**
@@ -405,8 +426,8 @@ class AuthenticationService {
             uri = window.location.protocol + "//" + window.location.host;
         }
 
-        // Redirects the user to the sign in URI
-        window.location.href = AuthenticationService.configuration.uri + AuthenticationService.configuration.signInPath + "?" +
+        // Creates the sign in URL
+        var signInUrl = AuthenticationService.configuration.uri + AuthenticationService.configuration.signInPath + "?" +
             (!!idToken ? "id_token_hint=" + encodeURIComponent(idToken) + "&" : "") +
             "client_id=" + encodeURIComponent(AuthenticationService.configuration.clientId) + "&" +
             "redirect_uri=" + encodeURIComponent(uri) + "&" +
@@ -415,25 +436,18 @@ class AuthenticationService {
             "state=" + encodeURIComponent(!!state ? state : "") + "&" +
             "acr_values=" + encodeURIComponent("idp:" + provider) + "&" +
             "nonce=" + encodeURIComponent(AuthenticationService.generateGuid());
-    }
-
-    /**
-     * Redirects the user to the provided path of the identity service.
-     * @param {string} path The path to which the user is redirected.
-     * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced. 
-     */
-    public static redirect(path: string, redirectUri?: string) {
-
-        // Gets the redirect URI
-        var uri = redirectUri;
-        if (!uri) {
-            uri = window.location.protocol + "//" + window.location.host;
+            
+        // Adds additional parameters to the URL
+        if (!!AuthenticationService.configuration.additionalParameters) {
+            for (var parameter in AuthenticationService.configuration.additionalParameters) {
+                if (AuthenticationService.configuration.additionalParameters[parameter] != null) {
+                    signInUrl = signInUrl + "&" + parameter + "=" + encodeURIComponent(AuthenticationService.configuration.additionalParameters[parameter]);
+                }
+            }
         }
-
-        // Redirects the user to the sign in URI
-        window.location.href = AuthenticationService.configuration.uri + path + "?" +
-        "client_id=" + encodeURIComponent(AuthenticationService.configuration.clientId) + "&" +
-        "redirect_uri=" + encodeURIComponent(uri);
+        
+        // Redirects the user to the sign in URL
+        window.location.href = signInUrl;
     }
 
     /**

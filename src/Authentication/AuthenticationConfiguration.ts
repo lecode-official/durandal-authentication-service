@@ -42,6 +42,11 @@ class AuthenticationConfiguration {
     public scopes: Array<string>;
 
     /**
+     * Gets or sets additional parameters that are sent to the sign in endpoint.
+     */
+    public additionalParameters: { [key: string]: string; }|null;
+
+    /**
      * Gets or sets the URI that is used to sign in.
      */
     public signInPath: string;
