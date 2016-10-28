@@ -14,7 +14,6 @@ import knockout = require("knockout");
 import IStore = require("Storage/IStore");
 import StorageService = require("Storage/StorageService");
 import TimeSpan = require("Globalization/TimeSpan");
-import User = require("Authentication/User");
 
 // #endregion
 
@@ -31,9 +30,14 @@ class AuthenticationService {
     private static _state: KnockoutObservable<AuthenticationState> = knockout.observable<AuthenticationState>(AuthenticationState.None); 
 
     /**
+     * Contains the bearer token which is used to authenticate the user. This value is null if no user is signed in.
+     */
+    private static _bearerToken: KnockoutObservable<string|null> = knockout.observable<string|null>(null);
+
+    /**
      * Contains some information about the current user. This value is null if no user is signed in.
      */
-    private static _user: KnockoutObservable<User|null> = knockout.observable<User|null>(null);
+    private static _user: KnockoutObservable<{ [key: string]: any; }|null> = knockout.observable<{ [key: string]: any; }|null>(null);
 
     /**
      * Contains the current configuration of the authentication service.
@@ -199,14 +203,13 @@ class AuthenticationService {
             // Decodes the token
             var decodedToken = jwt_decode(token);
 
-            // Creates the new user information
-            var user = new User(decodedToken);
-
             // Updates the user information
-            AuthenticationService.user(user);
+            AuthenticationService.bearerToken(bearerToken);
+            AuthenticationService.user(decodedToken);
         } else {
 
             // Sets the user information to null
+            AuthenticationService.bearerToken(null);
             AuthenticationService.user(null);
         }
     }
@@ -304,9 +307,16 @@ class AuthenticationService {
     }
 
     /**
+     * Gets the bearer token which is used to authenticate the user. This value is null if no user is signed in.
+     */
+    public static get bearerToken(): KnockoutObservable<string|null> {
+        return AuthenticationService._bearerToken;
+    }
+
+    /**
      * Gets some information about the current user. This value is null if no user is signed in.
      */
-    public static get user(): KnockoutObservable<User|null> {
+    public static get user(): KnockoutObservable<{ [key: string]: any; }|null> {
         return AuthenticationService._user;
     }
     
@@ -366,25 +376,6 @@ class AuthenticationService {
     }
 
     /**
-     * Redirects the user to the provided path of the identity service.
-     * @param {string} path The path to which the user is redirected.
-     * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced. 
-     */
-    public static redirect(path: string, redirectUri?: string) {
-
-        // Gets the redirect URI
-        var uri = redirectUri;
-        if (!uri) {
-            uri = window.location.protocol + "//" + window.location.host;
-        }
-
-        // Redirects the user to the sign in URI
-        window.location.href = AuthenticationService.configuration.uri + path + "?" +
-        "client_id=" + encodeURIComponent(AuthenticationService.configuration.clientId) + "&" +
-        "redirect_uri=" + encodeURIComponent(uri);
-    }
-
-    /**
      * Redirects the user to the local sign in.
      * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced. 
      */
@@ -393,7 +384,7 @@ class AuthenticationService {
     } 
 
     /**
-    * Redirects the user to the sign in of an external provider.
+    * Redirects the user to the sign in of an external provider. The provider is set as acr_values parameter in the request.
     * @param {string} provider The name of the provider. 
     * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced. 
     */
@@ -424,6 +415,25 @@ class AuthenticationService {
             "state=" + encodeURIComponent(!!state ? state : "") + "&" +
             "acr_values=" + encodeURIComponent("idp:" + provider) + "&" +
             "nonce=" + encodeURIComponent(AuthenticationService.generateGuid());
+    }
+
+    /**
+     * Redirects the user to the provided path of the identity service.
+     * @param {string} path The path to which the user is redirected.
+     * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced. 
+     */
+    public static redirect(path: string, redirectUri?: string) {
+
+        // Gets the redirect URI
+        var uri = redirectUri;
+        if (!uri) {
+            uri = window.location.protocol + "//" + window.location.host;
+        }
+
+        // Redirects the user to the sign in URI
+        window.location.href = AuthenticationService.configuration.uri + path + "?" +
+        "client_id=" + encodeURIComponent(AuthenticationService.configuration.clientId) + "&" +
+        "redirect_uri=" + encodeURIComponent(uri);
     }
 
     /**
