@@ -1,5 +1,5 @@
 ///<amd-module name='Authentication/AuthenticationService'/>
-define("Authentication/AuthenticationService", ["require", "exports", "Authentication/AuthenticationState", "Globalization/DateTime", "jwt_decode", "jquery", "knockout", "Storage/StorageService", "Globalization/TimeSpan", "Authentication/User"], function (require, exports, AuthenticationState, DateTime, jwt_decode, jquery, knockout, StorageService, TimeSpan, User) {
+define("Authentication/AuthenticationService", ["require", "exports", "Authentication/AuthenticationState", "Globalization/DateTime", "jwt_decode", "jquery", "knockout", "Storage/StorageService", "Globalization/TimeSpan"], function (require, exports, AuthenticationState, DateTime, jwt_decode, jquery, knockout, StorageService, TimeSpan) {
     "use strict";
     // #endregion
     /**
@@ -128,13 +128,13 @@ define("Authentication/AuthenticationService", ["require", "exports", "Authentic
             if (!!token) {
                 // Decodes the token
                 var decodedToken = jwt_decode(token);
-                // Creates the new user information
-                var user = new User(decodedToken);
                 // Updates the user information
-                AuthenticationService.user(user);
+                AuthenticationService.bearerToken(bearerToken);
+                AuthenticationService.user(decodedToken);
             }
             else {
                 // Sets the user information to null
+                AuthenticationService.bearerToken(null);
                 AuthenticationService.user(null);
             }
         };
@@ -211,6 +211,16 @@ define("Authentication/AuthenticationService", ["require", "exports", "Authentic
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(AuthenticationService, "bearerToken", {
+            /**
+             * Gets the bearer token which is used to authenticate the user. This value is null if no user is signed in.
+             */
+            get: function () {
+                return AuthenticationService._bearerToken;
+            },
+            enumerable: true,
+            configurable: true
+        });
         Object.defineProperty(AuthenticationService, "user", {
             /**
              * Gets some information about the current user. This value is null if no user is signed in.
@@ -264,22 +274,6 @@ define("Authentication/AuthenticationService", ["require", "exports", "Authentic
                 "nonce=" + encodeURIComponent(AuthenticationService.generateGuid());
         };
         /**
-         * Redirects the user to the provided path of the identity service.
-         * @param {string} path The path to which the user is redirected.
-         * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced.
-         */
-        AuthenticationService.redirect = function (path, redirectUri) {
-            // Gets the redirect URI
-            var uri = redirectUri;
-            if (!uri) {
-                uri = window.location.protocol + "//" + window.location.host;
-            }
-            // Redirects the user to the sign in URI
-            window.location.href = AuthenticationService.configuration.uri + path + "?" +
-                "client_id=" + encodeURIComponent(AuthenticationService.configuration.clientId) + "&" +
-                "redirect_uri=" + encodeURIComponent(uri);
-        };
-        /**
          * Redirects the user to the local sign in.
          * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced.
          */
@@ -287,7 +281,7 @@ define("Authentication/AuthenticationService", ["require", "exports", "Authentic
             AuthenticationService.signIn(redirectUri);
         };
         /**
-        * Redirects the user to the sign in of an external provider.
+        * Redirects the user to the sign in of an external provider. The provider is set as acr_values parameter in the request.
         * @param {string} provider The name of the provider.
         * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced.
         */
@@ -313,6 +307,22 @@ define("Authentication/AuthenticationService", ["require", "exports", "Authentic
                 "state=" + encodeURIComponent(!!state ? state : "") + "&" +
                 "acr_values=" + encodeURIComponent("idp:" + provider) + "&" +
                 "nonce=" + encodeURIComponent(AuthenticationService.generateGuid());
+        };
+        /**
+         * Redirects the user to the provided path of the identity service.
+         * @param {string} path The path to which the user is redirected.
+         * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced.
+         */
+        AuthenticationService.redirect = function (path, redirectUri) {
+            // Gets the redirect URI
+            var uri = redirectUri;
+            if (!uri) {
+                uri = window.location.protocol + "//" + window.location.host;
+            }
+            // Redirects the user to the sign in URI
+            window.location.href = AuthenticationService.configuration.uri + path + "?" +
+                "client_id=" + encodeURIComponent(AuthenticationService.configuration.clientId) + "&" +
+                "redirect_uri=" + encodeURIComponent(uri);
         };
         /**
          * Redirects the user to the URI where the sign out takes place.
@@ -350,6 +360,10 @@ define("Authentication/AuthenticationService", ["require", "exports", "Authentic
          * Contains a value that determines the state of the authentication.
          */
         AuthenticationService._state = knockout.observable(AuthenticationState.None);
+        /**
+         * Contains the bearer token which is used to authenticate the user. This value is null if no user is signed in.
+         */
+        AuthenticationService._bearerToken = knockout.observable(null);
         /**
          * Contains some information about the current user. This value is null if no user is signed in.
          */

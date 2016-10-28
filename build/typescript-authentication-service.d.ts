@@ -65,12 +65,15 @@ declare module 'Authentication/AuthenticationConfiguration' {
 declare module 'Authentication/AuthenticationService' {
 	/// <reference path="../Typings/References.d.ts" />
 	import AuthenticationConfiguration = require("Authentication/AuthenticationConfiguration");
-	import AuthenticationState = require("Authentication/AuthenticationState");
-	import User = require("Authentication/User"); class AuthenticationService {
+	import AuthenticationState = require("Authentication/AuthenticationState"); class AuthenticationService {
 	    /**
 	     * Contains a value that determines the state of the authentication.
 	     */
 	    private static _state;
+	    /**
+	     * Contains the bearer token which is used to authenticate the user. This value is null if no user is signed in.
+	     */
+	    private static _bearerToken;
 	    /**
 	     * Contains some information about the current user. This value is null if no user is signed in.
 	     */
@@ -111,9 +114,15 @@ declare module 'Authentication/AuthenticationService' {
 	     */
 	    static readonly state: KnockoutObservable<AuthenticationState>;
 	    /**
+	     * Gets the bearer token which is used to authenticate the user. This value is null if no user is signed in.
+	     */
+	    static readonly bearerToken: KnockoutObservable<string | null>;
+	    /**
 	     * Gets some information about the current user. This value is null if no user is signed in.
 	     */
-	    static readonly user: KnockoutObservable<User | null>;
+	    static readonly user: KnockoutObservable<{
+	        [key: string]: any;
+	    } | null>;
 	    /**
 	     * Configures the authentication manager so that it can be used to detect bearer tokens and obtain refresh tokens.
 	     * @param {AuthenticationConfiguration} configuration The configuration that the authentication service should use.
@@ -125,22 +134,22 @@ declare module 'Authentication/AuthenticationService' {
 	     */
 	    static signIn(redirectUri?: string): void;
 	    /**
-	     * Redirects the user to the provided path of the identity service.
-	     * @param {string} path The path to which the user is redirected.
-	     * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced.
-	     */
-	    static redirect(path: string, redirectUri?: string): void;
-	    /**
 	     * Redirects the user to the local sign in.
 	     * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced.
 	     */
 	    static signInLocal(redirectUri?: string): void;
 	    /**
-	    * Redirects the user to the sign in of an external provider.
+	    * Redirects the user to the sign in of an external provider. The provider is set as acr_values parameter in the request.
 	    * @param {string} provider The name of the provider.
 	    * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced.
 	    */
 	    static signInExternal(provider: string, redirectUri?: string): void;
+	    /**
+	     * Redirects the user to the provided path of the identity service.
+	     * @param {string} path The path to which the user is redirected.
+	     * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced.
+	     */
+	    static redirect(path: string, redirectUri?: string): void;
 	    /**
 	     * Redirects the user to the URI where the sign out takes place.
 	     * @param {string} redirectUri If a redirect URI is provided, the default redirection (to the base URI) is replaced.
@@ -174,50 +183,5 @@ declare module 'Authentication/AuthenticationState' {
 	    RenewError = 3,
 	}
 	export = AuthenticationState;
-
-}
-declare module 'Authentication/User' {
-	 class User {
-	    /**
-	     * Initializes a new User instance.
-	     * @param {{ [key: string]: any; }} jwtToken The decoded token.
-	     */
-	    constructor(jwtToken: {
-	        [key: string]: any;
-	    });
-	    /**
-	     * Contains the subject of the user.
-	     */
-	    private _subject;
-	    /**
-	     * Contains the name of the user.
-	     */
-	    private _name;
-	    /**
-	     * Contains the email address of the user.
-	     */
-	    private _emailAddress;
-	    /**
-	     * Contains the AMR value (indicator for external sign in).
-	     */
-	    private _amr;
-	    /**
-	     * Gets the subject of the user.
-	     */
-	    readonly subject: string;
-	    /**
-	     * Gets the AMR value (indicator for external sign in).
-	     */
-	    readonly amr: string;
-	    /**
-	     * Gets the name of the user.
-	     */
-	    readonly name: string;
-	    /**
-	     * Gets the email address of the user.
-	     */
-	    readonly emailAddress: string;
-	}
-	export = User;
 
 }
