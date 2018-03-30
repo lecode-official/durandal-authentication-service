@@ -1,19 +1,20 @@
 ﻿ 
-///<amd-module name='Authentication/AuthenticationService'/>
+///<amd-module name='durandal-authentication-service/AuthenticationService'/>
 
 // #region Import Directives
 
-/// <reference path="../Typings/References.d.ts" />
+/// <reference types="durandal-globalization" />
+/// <reference types="durandal-storage-service" />
 
-import AuthenticationConfiguration = require("Authentication/AuthenticationConfiguration");
-import AuthenticationState = require("Authentication/AuthenticationState");
-import DateTime = require("Globalization/DateTime");
-import jwt_decode = require("jwt_decode");
+import AuthenticationConfiguration = require("durandal-authentication-service/AuthenticationConfiguration");
+import AuthenticationState = require("durandal-authentication-service/AuthenticationState");
+import DateTime = require("durandal-globalization/DateTime");
+import jwt_decode = require("jwt-decode");
 import jquery = require("jquery");
 import knockout = require("knockout");
-import IStore = require("Storage/IStore");
-import StorageService = require("Storage/StorageService");
-import TimeSpan = require("Globalization/TimeSpan");
+import IStore = require("durandal-storage-service/IStore");
+import StorageService = require("durandal-storage-service/StorageService");
+import TimeSpan = require("durandal-globalization/TimeSpan");
 
 // #endregion
 

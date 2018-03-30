@@ -1,5 +1,5 @@
 ﻿
-///<amd-module name='Authentication/AuthenticationState'/>
+///<amd-module name='durandal-authentication-service/AuthenticationState'/>
 
 /**
  * Represents the state of the authentication.

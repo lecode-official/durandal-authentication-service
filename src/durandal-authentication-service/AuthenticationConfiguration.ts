@@ -1,11 +1,11 @@
 ﻿
-///<amd-module name='Authentication/AuthenticationConfiguration'/>
+///<amd-module name='durandal-authentication-service/AuthenticationConfiguration'/>
 
 // #region Import Directives
 
-/// <reference path="../Typings/References.d.ts" />
+/// <reference types="durandal-storage-service" />
 
-import StorageKind = require("Storage/StorageKind");
+import StorageKind = require("durandal-storage-service/StorageKind");
 
 // #endregion
 

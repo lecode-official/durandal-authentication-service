@@ -1,12 +1,11 @@
 {
-  "name": "typescript-authentication-service",
-  "displayName": "TypeScript Authentication Service",
-  "private": true,
-  "version": "0.1.7",
+  "name": "durandal-authentication-service",
+  "displayName": "Durandal Authentication Service",
+  "version": "0.1.8",
   "description": "A simple library written in TypeScript for authentication using OAuth.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lecode-official/typescript-authentication-service.git"
+    "url": "git+https://github.com/lecode-official/durandal-authentication-service.git"
   },
   "keywords": [
     "Authentication",
@@ -19,17 +18,27 @@
   "author": "David Neumann & Lukas Rögner",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lecode-official/typescript-authentication-service/issues"
+    "url": "https://github.com/lecode-official/durandal-authentication-service/issues"
   },
-  "homepage": "https://github.com/lecode-official/typescript-authentication-service#readme",
+  "homepage": "https://github.com/lecode-official/durandal-authentication-service#readme",
+  "dependencies": {
+    "jwt-decode": "2.1.0",
+    "knockout": "3.4.0",
+    "jquery": "~3.1.1",
+    "@types/jquery": "3.3.1",
+    "@types/durandal": "2.1.36",
+    "@types/jwt-decode": "2.2.1",
+    "durandal-globalization": "https://github.com/lecode-official/durandal-globalization.git#v0.1.5",
+    "durandal-storage-service": "https://github.com/lecode-official/durandal-storage-service.git#v0.1.6"
+  },
   "devDependencies": {
-    "bower": "^1.7.9",
     "dts-generator": "2.0.0",
     "gulp": "^3.9.1",
-    "gulp-bower": "0.0.13",
     "gulp-clean": "^0.3.2",
     "gulp-typescript": "^3.0.1",
     "run-sequence": "1.2.2",
     "typescript": "^2.0.3"
-  }
+  },
+  "types": "./build/durandal-authentication-service.d.ts",
+  "typings": "./build/durandal-authentication-service.d.ts"
 }

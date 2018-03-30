@@ -1,5 +1,5 @@
-///<amd-module name='Authentication/AuthenticationState'/>
-define("Authentication/AuthenticationState", ["require", "exports"], function (require, exports) {
+///<amd-module name='durandal-authentication-service/AuthenticationState'/>
+define("durandal-authentication-service/AuthenticationState", ["require", "exports"], function (require, exports) {
     "use strict";
     /**
      * Represents the state of the authentication.

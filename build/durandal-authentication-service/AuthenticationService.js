@@ -1,11 +1,11 @@
-///<amd-module name='Authentication/AuthenticationService'/>
-define("Authentication/AuthenticationService", ["require", "exports", "Authentication/AuthenticationState", "Globalization/DateTime", "jwt_decode", "jquery", "knockout", "Storage/StorageService", "Globalization/TimeSpan"], function (require, exports, AuthenticationState, DateTime, jwt_decode, jquery, knockout, StorageService, TimeSpan) {
+///<amd-module name='durandal-authentication-service/AuthenticationService'/>
+define("durandal-authentication-service/AuthenticationService", ["require", "exports", "durandal-authentication-service/AuthenticationState", "durandal-globalization/DateTime", "jwt-decode", "jquery", "knockout", "durandal-storage-service/StorageService", "durandal-globalization/TimeSpan"], function (require, exports, AuthenticationState, DateTime, jwt_decode, jquery, knockout, StorageService, TimeSpan) {
     "use strict";
     // #endregion
     /**
      * Represents a service that is used to manage authentication, which means detecting bearer tokens and requesting refresh tokens.
      */
-    var AuthenticationService = (function () {
+    var AuthenticationService = /** @class */ (function () {
         function AuthenticationService() {
         }
         // #endregion
@@ -60,6 +60,7 @@ define("Authentication/AuthenticationService", ["require", "exports", "Authentic
             if (!!hashParameters["error"]) {
                 // Sets the new state of the authentication
                 AuthenticationService.state(!!silentHash ? AuthenticationState.RenewError : AuthenticationState.Error);
+                AuthenticationService.bearerToken(null);
                 // Clears all values depending on the bearer token
                 AuthenticationService.clearStore();
                 // Clears the hash as it should not be detected by the navigation service
@@ -75,10 +76,13 @@ define("Authentication/AuthenticationService", ["require", "exports", "Authentic
                     AuthenticationService.store.store("AuthenticationService:IdToken", hashParameters["id_token"]);
                     AuthenticationService.store.store("AuthenticationService:BearerToken", hashParameters["access_token"]);
                     AuthenticationService.store.store("AuthenticationService:BearerTokenExpiration", DateTime.now.addSeconds(parseInt(hashParameters["expires_in"])));
+                    // Sets the new state of the authentication
+                    AuthenticationService.bearerToken(hashParameters["access_token"]);
                 }
                 else {
                     // Sets the new state of the authentication
                     AuthenticationService.state(!!silentHash ? AuthenticationState.RenewError : AuthenticationState.Error);
+                    AuthenticationService.bearerToken(null);
                     // Clears all values depending on the bearer token
                     AuthenticationService.clearStore();
                 }
@@ -104,6 +108,7 @@ define("Authentication/AuthenticationService", ["require", "exports", "Authentic
             }
             else {
                 // Sets the state of the authentication to authenticated
+                AuthenticationService.bearerToken(bearerToken);
                 AuthenticationService.state(AuthenticationState.Authenticated);
                 // Sets the timeout for silent renew
                 window.setTimeout(function () {
@@ -117,6 +122,7 @@ define("Authentication/AuthenticationService", ["require", "exports", "Authentic
                         AuthenticationService.clearStore();
                         // Sets the new state
                         AuthenticationService.state(AuthenticationState.RenewError);
+                        AuthenticationService.bearerToken(null);
                         // Checks the token in order to update all variables
                         AuthenticationService.checkToken();
                     });
@@ -129,12 +135,10 @@ define("Authentication/AuthenticationService", ["require", "exports", "Authentic
                 // Decodes the token
                 var decodedToken = jwt_decode(token);
                 // Updates the user information
-                AuthenticationService.bearerToken(bearerToken);
                 AuthenticationService.user(decodedToken);
             }
             else {
                 // Sets the user information to null
-                AuthenticationService.bearerToken(null);
                 AuthenticationService.user(null);
             }
         };

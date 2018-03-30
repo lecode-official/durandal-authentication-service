@@ -1,31 +1,6 @@
-
-/**
- * Represents the interface of the static JWT-decode module.
- */
-interface JwtDecodeStatic {
-    (token: string): { [key: string]: any };
-}
-
-/**
- * Declares the static variable of the JWT-decode module.
- */
-declare var jwt_decode: JwtDecodeStatic;
-
-/**
- * Declares the JWT-module.
- */
-declare module "jwt_decode" {
-    export = jwt_decode;
-}
-
-/// <reference path="Declarations.d.ts" />
-/// <reference path="../../bower_components/DefinitelyTyped/jquery/jquery.d.ts" />
-/// <reference path="../../bower_components/DefinitelyTyped/knockout/knockout.d.ts" />
-/// <reference path="../../bower_components/typescript-globalization/build/typescript-globalization.d.ts" />
-/// <reference path="../../bower_components/typescript-storage-service/build/typescript-storage-service.d.ts" />
-declare module 'Authentication/AuthenticationConfiguration' {
-	/// <reference path="../Typings/References.d.ts" />
-	import StorageKind = require("Storage/StorageKind"); class AuthenticationConfiguration {
+declare module 'durandal-authentication-service/AuthenticationConfiguration' {
+	/// <reference types="durandal-storage-service" />
+	import StorageKind = require("durandal-storage-service/StorageKind"); class AuthenticationConfiguration {
 	    /**
 	     * Gets or sets the base URI of the identity service.
 	     */
@@ -68,10 +43,10 @@ declare module 'Authentication/AuthenticationConfiguration' {
 	export = AuthenticationConfiguration;
 
 }
-declare module 'Authentication/AuthenticationService' {
-	/// <reference path="../Typings/References.d.ts" />
-	import AuthenticationConfiguration = require("Authentication/AuthenticationConfiguration");
-	import AuthenticationState = require("Authentication/AuthenticationState"); class AuthenticationService {
+declare module 'durandal-authentication-service/AuthenticationService' {
+	/// <reference types="knockout" />
+	import AuthenticationConfiguration = require("durandal-authentication-service/AuthenticationConfiguration");
+	import AuthenticationState = require("durandal-authentication-service/AuthenticationState"); class AuthenticationService {
 	    /**
 	     * Contains a value that determines the state of the authentication.
 	     */
@@ -163,7 +138,7 @@ declare module 'Authentication/AuthenticationService' {
 	export = AuthenticationService;
 
 }
-declare module 'Authentication/AuthenticationState' {
+declare module 'durandal-authentication-service/AuthenticationState' {
 	 enum AuthenticationState {
 	    /**
 	     * The user is not authenticated.
