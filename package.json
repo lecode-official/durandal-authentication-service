@@ -1,7 +1,7 @@
 {
   "name": "durandal-authentication-service",
   "displayName": "Durandal Authentication Service",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "A simple library written in TypeScript for authentication using OAuth.",
   "repository": {
     "type": "git",
@@ -27,7 +27,6 @@
     "jquery": "~3.1.1",
     "@types/jquery": "3.3.1",
     "@types/durandal": "2.1.36",
-    "@types/jwt-decode": "2.2.1",
     "durandal-globalization": "https://github.com/lecode-official/durandal-globalization.git#v0.1.5",
     "durandal-storage-service": "https://github.com/lecode-official/durandal-storage-service.git#v0.1.6"
   },

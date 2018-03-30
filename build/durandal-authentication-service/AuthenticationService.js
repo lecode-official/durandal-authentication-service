@@ -1,5 +1,5 @@
 ///<amd-module name='durandal-authentication-service/AuthenticationService'/>
-define("durandal-authentication-service/AuthenticationService", ["require", "exports", "durandal-authentication-service/AuthenticationState", "durandal-globalization/DateTime", "jwt-decode", "jquery", "knockout", "durandal-storage-service/StorageService", "durandal-globalization/TimeSpan"], function (require, exports, AuthenticationState, DateTime, jwt_decode, jquery, knockout, StorageService, TimeSpan) {
+define("durandal-authentication-service/AuthenticationService", ["require", "exports", "durandal-authentication-service/AuthenticationState", "durandal-globalization/DateTime", "jwt_decode", "jquery", "knockout", "durandal-storage-service/StorageService", "durandal-globalization/TimeSpan"], function (require, exports, AuthenticationState, DateTime, jwt_decode, jquery, knockout, StorageService, TimeSpan) {
     "use strict";
     // #endregion
     /**
